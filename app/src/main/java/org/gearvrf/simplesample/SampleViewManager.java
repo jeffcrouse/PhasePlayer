@@ -41,33 +41,15 @@ import org.gearvrf.scene_objects.GVRVideoSceneObject.GVRVideoType;
 
 import android.media.MediaPlayer;
 
-
 public class SampleViewManager extends GVRScript {
 
-//    private static final float ANIMATION_DURATION = 0.3f;
-//    private static final float SELECTED_SCALE = 2.0f;
-
     private GVRContext mGVRContext = null;
-//    private List<GVRSceneObject> mBoards = new ArrayList<GVRSceneObject>();
-//    private GVRSceneObject mBoardParent;
-//    private int mSelected = 0;
-//    private GVRAnimationEngine mAnimationEngine;
-
-//    private static final int LOOK_UP = 1;
-//    private static final int LOOK_FRONT = 0;
-//    private static final int LOOK_DOWN = -1;
-//    private static final float LOOK_AT_THRESHOLD = 0.2f;
-//    private int mLookAtMode = LOOK_FRONT;
-//    private GVRAnimation mRotationAnimation;
 
     @Override
     public void onInit(GVRContext gvrContext) {
 
-        // save context for possible use in onStep(), even though that's empty
-        // in this sample
-        mGVRContext = gvrContext;
 
-        //mAnimationEngine = gvrContext.getAnimationEngine();
+        mGVRContext = gvrContext;
 
         GVRScene scene = gvrContext.getNextMainScene();
         GVRScene mainScene = mGVRContext.getNextMainScene();
@@ -82,28 +64,11 @@ public class SampleViewManager extends GVRScript {
         mainScene.getMainCameraRig().getTransform()
                 .setPosition(0.0f, 0.0f, 0.0f);
 
-        /*
-        // load texture
-        GVRTexture texture = gvrContext.loadTexture(new GVRAndroidResource(
-                mGVRContext, R.drawable.gearvr_logo));
-
-        // create a scene object (this constructor creates a rectangular scene
-        // object that uses the standard 'unlit' shader)
-        GVRSceneObject sceneObject = new GVRSceneObject(gvrContext, 4.0f, 2.0f,
-                texture);
-
-        // set the scene object position
-        sceneObject.getTransform().setPosition(0.0f, 0.0f, -3.0f);
-
-        // add the scene object to the scene graph
-        scene.addSceneObject(sceneObject);
-        */
-
         GVRMesh sphereMesh = mGVRContext.loadMesh(new GVRAndroidResource(
                 mGVRContext, R.raw.sphere_mesh));
 
 
-        MediaPlayer mediaPlayer = MediaPlayer.create(mGVRContext.getContext(), R.drawable.seven);
+        MediaPlayer mediaPlayer = MediaPlayer.create(mGVRContext.getContext(), R.drawable.three);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
 
@@ -111,200 +76,11 @@ public class SampleViewManager extends GVRScript {
         video.setName("video");
 
         mainScene.addSceneObject(video);
-
-
-        /*
-        GVRSceneObject leftScreen = new GVRSceneObject(mGVRContext, sphereMesh,
-                mGVRContext.loadTexture(new GVRAndroidResource(mGVRContext,
-                        R.drawable.left_screen_png)));
-        leftScreen.getTransform().setScale(10.0f, 10.0f, 10.0f);
-
-        leftScreen.getRenderData().setRenderMask(GVRRenderMaskBit.Left);
-        GVRSceneObject rightScreen = new GVRSceneObject(mGVRContext,
-                sphereMesh, mGVRContext.loadTexture(new GVRAndroidResource(
-                mGVRContext, R.drawable.left_screen_png)));
-        rightScreen.getTransform().setScale(10.0f, 10.0f, 10.0f);
-        rightScreen.getRenderData().setRenderMask(GVRRenderMaskBit.Right);
-
-        mainScene.addSceneObject(leftScreen);
-        mainScene.addSceneObject(rightScreen);
-
-
-
-        List<GVRTexture> numberTextures = new ArrayList<GVRTexture>();
-        int[] resourceIds = new int[] { R.drawable.photo_1_jpg,
-                R.drawable.photo_2_jpg, R.drawable.photo_3_jpg,
-                R.drawable.photo_4_jpg, R.drawable.photo_5_jpg,
-                R.drawable.photo_6_jpg, R.drawable.photo_7_jpg,
-                R.drawable.photo_8_jpg, R.drawable.photo_9_jpg };
-        for (int id : resourceIds) {
-            numberTextures.add(mGVRContext.loadTexture(new GVRAndroidResource(
-                    mGVRContext, id)));
-        }
-
-        for (int i = 0, size = numberTextures.size(); i < size; ++i) {
-            GVRSceneObject number = new GVRSceneObject(mGVRContext, 2.0f, 1.0f,
-                    numberTextures.get(i));
-            number.getRenderData().getMaterial().setOpacity(0.0f);
-            number.getTransform().setPosition(0.0f, 0.0f, -5.0f);
-            float degree = 360.0f * i / (size + 1);
-            number.getTransform().rotateByAxisWithPivot(degree, 0.0f, 1.0f,
-                    0.0f, 0.0f, 0.0f, 0.0f);
-            mBoards.add(number);
-        }
-
-
-
-        MediaPlayer mediaPlayer = MediaPlayer.create(mGVRContext.getContext(),
-                R.drawable.tron);
-        // mediaPlayer.start();
-        GVRVideoSceneObject video = new GVRVideoSceneObject(mGVRContext, 2.0f,
-                1.0f, mediaPlayer, GVRVideoType.MONO);
-        video.setName("video");
-        video.getRenderData().getMaterial().setOpacity(0.0f);
-        video.getTransform().setPosition(0.0f, 0.0f, -5.0f);
-        float degree = 360.0f * (numberTextures.size())
-                / (numberTextures.size() + 1);
-        video.getTransform().rotateByAxisWithPivot(degree, 0.0f, 1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f);
-        mBoards.add(video);
-
-        mBoardParent = new GVRSceneObject(mGVRContext);
-
-        for (GVRSceneObject board : mBoards) {
-            mBoardParent.addChildObject(board);
-        }
-
-        mainScene.addSceneObject(mBoardParent);
-
-        mBoardParent.getTransform().rotateByAxisWithPivot(90.0f, 0.0f, 1.0f,
-                0.0f, 0.0f, 0.0f, 0.0f);
-
-        mBoards.get(mSelected).getTransform()
-                .setScale(SELECTED_SCALE, SELECTED_SCALE, 0.0f);
-        */
-
-        CustomPostEffectShaderManager shaderManager = new CustomPostEffectShaderManager(
-                mGVRContext);
-        GVRPostEffect postEffect = new GVRPostEffect(mGVRContext,
-                shaderManager.getShaderId());
-        postEffect.setVec3("ratio_r", 0.393f, 0.769f, 0.189f);
-        postEffect.setVec3("ratio_g", 0.349f, 0.686f, 0.168f);
-        postEffect.setVec3("ratio_b", 0.272f, 0.534f, 0.131f);
-        mainScene.getMainCameraRig().getLeftCamera().addPostEffect(postEffect);
-        mainScene.getMainCameraRig().getRightCamera().addPostEffect(postEffect);
     }
-
 
     @Override
     public void onStep() {
-          /*
-        float lookAtY = mGVRContext.getMainScene().getMainCameraRig()
-                .getLookAt()[1];
 
-        if (mRotationAnimation != null && mRotationAnimation.isFinished()) {
-            mRotationAnimation = null;
-        }
-
-        if (mRotationAnimation == null) {
-            if (mLookAtMode == LOOK_FRONT) {
-                if (lookAtY > LOOK_AT_THRESHOLD) {
-                    mLookAtMode = LOOK_UP;
-                    rotateCounterClockwise();
-                } else if (lookAtY < -LOOK_AT_THRESHOLD) {
-                    mLookAtMode = LOOK_DOWN;
-                    rotateClockwise();
-                }
-            }
-            if (mLookAtMode == LOOK_UP) {
-                if (lookAtY < -LOOK_AT_THRESHOLD) {
-                    mLookAtMode = LOOK_DOWN;
-                    rotateClockwise();
-                } else if (lookAtY < LOOK_AT_THRESHOLD) {
-                    mLookAtMode = LOOK_FRONT;
-                }
-            }
-            if (mLookAtMode == LOOK_DOWN) {
-                if (lookAtY > LOOK_AT_THRESHOLD) {
-                    mLookAtMode = LOOK_UP;
-                    rotateCounterClockwise();
-                } else if (lookAtY > -LOOK_AT_THRESHOLD) {
-                    mLookAtMode = LOOK_FRONT;
-                }
-            }
-        }
-        */
     }
 
-    /*
-    private void rotateCounterClockwise() {
-        mRotationAnimation = new GVRRotationByAxisWithPivotAnimation(
-                mBoardParent, ANIMATION_DURATION, 360.0f / mBoards.size(),
-                0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f).start(mAnimationEngine);
-
-        new GVRScaleAnimation(mBoards.get(mSelected), ANIMATION_DURATION,
-                1.0f / SELECTED_SCALE, 1.0f / SELECTED_SCALE, 1.0f)
-                .start(mAnimationEngine);
-
-        new GVROpacityAnimation(mBoards.get(mSelected), ANIMATION_DURATION, 0f)
-                .start(mAnimationEngine);
-
-        if (mBoards.get(mSelected) instanceof GVRVideoSceneObject) {
-            GVRVideoSceneObject video = (GVRVideoSceneObject) mBoards
-                    .get(mSelected);
-            video.getMediaPlayer().stop();
-        }
-
-        if (--mSelected < 0) {
-            mSelected += mBoards.size();
-        }
-
-        new GVRScaleAnimation(mBoards.get(mSelected), ANIMATION_DURATION,
-                SELECTED_SCALE, SELECTED_SCALE, 1.0f).start(mAnimationEngine);
-
-        new GVROpacityAnimation(mBoards.get(mSelected), ANIMATION_DURATION, 1f)
-                .start(mAnimationEngine);
-
-        if (mBoards.get(mSelected) instanceof GVRVideoSceneObject) {
-            GVRVideoSceneObject video = (GVRVideoSceneObject) mBoards
-                    .get(mSelected);
-            video.getMediaPlayer().start();
-        }
-    }
-
-    private void rotateClockwise() {
-        mRotationAnimation = new GVRRotationByAxisWithPivotAnimation(
-                mBoardParent, ANIMATION_DURATION, -360.0f / mBoards.size(),
-                0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f).start(mAnimationEngine);
-
-        new GVRScaleAnimation(mBoards.get(mSelected), ANIMATION_DURATION,
-                1.0f / SELECTED_SCALE, 1.0f / SELECTED_SCALE, 1.0f)
-                .start(mAnimationEngine);
-
-        new GVROpacityAnimation(mBoards.get(mSelected), ANIMATION_DURATION, 0f)
-                .start(mAnimationEngine);
-
-        if (mBoards.get(mSelected) instanceof GVRVideoSceneObject) {
-            GVRVideoSceneObject video = (GVRVideoSceneObject) mBoards
-                    .get(mSelected);
-            video.getMediaPlayer().stop();
-        }
-
-        if (++mSelected >= mBoards.size()) {
-            mSelected -= mBoards.size();
-        }
-
-        new GVRScaleAnimation(mBoards.get(mSelected), ANIMATION_DURATION,
-                SELECTED_SCALE, SELECTED_SCALE, 1.0f).start(mAnimationEngine);
-
-        new GVROpacityAnimation(mBoards.get(mSelected), ANIMATION_DURATION, 1f)
-                .start(mAnimationEngine);
-
-        if (mBoards.get(mSelected) instanceof GVRVideoSceneObject) {
-            GVRVideoSceneObject video = (GVRVideoSceneObject) mBoards
-                    .get(mSelected);
-            video.getMediaPlayer().start();
-        }
-    }
-    */
 }
