@@ -44,8 +44,8 @@ import android.media.MediaPlayer;
 
 public class SampleViewManager extends GVRScript {
 
-    private static final float ANIMATION_DURATION = 0.3f;
-    private static final float SELECTED_SCALE = 2.0f;
+//    private static final float ANIMATION_DURATION = 0.3f;
+//    private static final float SELECTED_SCALE = 2.0f;
 
     private GVRContext mGVRContext = null;
 //    private List<GVRSceneObject> mBoards = new ArrayList<GVRSceneObject>();
@@ -103,10 +103,10 @@ public class SampleViewManager extends GVRScript {
                 mGVRContext, R.raw.sphere_mesh));
 
 
-        MediaPlayer mediaPlayer = MediaPlayer.create(mGVRContext.getContext(),
-                R.drawable.three);
+        MediaPlayer mediaPlayer = MediaPlayer.create(mGVRContext.getContext(), R.drawable.seven);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
+
         GVRVideoSceneObject video = new GVRVideoSceneObject(mGVRContext,sphereMesh, mediaPlayer, GVRVideoType.MONO);
         video.setName("video");
 
