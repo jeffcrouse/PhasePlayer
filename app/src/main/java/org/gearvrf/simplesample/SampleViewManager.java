@@ -65,10 +65,9 @@ public class SampleViewManager extends GVRScript {
                 .setPosition(0.0f, 0.0f, 0.0f);
 
         GVRMesh sphereMesh = mGVRContext.loadMesh(new GVRAndroidResource(
-                mGVRContext, R.raw.sphere_mesh));
+                mGVRContext, R.raw.sphere_mesh_5));
 
-
-        MediaPlayer mediaPlayer = MediaPlayer.create(mGVRContext.getContext(), R.drawable.three);
+        MediaPlayer mediaPlayer = MediaPlayer.create(mGVRContext.getContext(), R.drawable.seven);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
 
